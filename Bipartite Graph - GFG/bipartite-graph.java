@@ -37,24 +37,16 @@ class GFG
 
 class Solution
 {
-    public boolean check(ArrayList<ArrayList<Integer>> adj,int[] vis,int i)
+    public boolean dfs(int col,int[] vis,ArrayList<ArrayList<Integer>> adj,int node)
     {
-        vis[i]=0;
-        Queue<Integer> q=new LinkedList<>();
-        q.add(i);
-        while(!q.isEmpty())
+        vis[node]=col;
+        for(int it:adj.get(node))
         {
-            int node=q.peek();
-            q.remove();
-            for(int it:adj.get(node))
+            if(vis[it]==-1)
             {
-                if(vis[it]==-1)
-                {
-                    q.add(it);
-                    vis[it]=1-vis[node];
-                }
-                else if(vis[it]==vis[node]) return false;
+                if(!dfs(1-col,vis,adj,it)) return false;
             }
+            else if(vis[it]==col) return false;
         }
         return true;
     }
@@ -66,7 +58,7 @@ class Solution
         {
             if(vis[i]==-1)
             {
-                if(!check(adj,vis,i)) return false;
+                if(!dfs(0,vis,adj,i)) return false;
             }
         }
         return true;
